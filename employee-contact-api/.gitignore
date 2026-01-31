@@ -1,0 +1,43 @@
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# IDE
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+# VS Code
+.vscode/
+
+# Kotlin
+*.class
+*.log
+*.ctxt
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Application
+*.log
+logs/
+
+# H2 Database
+*.db
+*.trace.db
+*.lock.db
+
+# Environment
+.env
+.env.local
+
+# Test
+test-output/
