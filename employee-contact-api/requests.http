@@ -1,0 +1,156 @@
+### Employee Contact API - HTTP Request Examples
+### IntelliJ IDEA HTTP Client / VS Code REST Client 사용 가능
+
+@baseUrl = http://localhost:8080
+@apiKey = dev-api-key-change-in-production
+
+### ===== 인증 테스트 =====
+
+### 인증 없이 요청 (401 Unauthorized 예상)
+GET {{baseUrl}}/api/employee
+
+### 잘못된 API Key (401 Unauthorized 예상)
+GET {{baseUrl}}/api/employee
+X-API-Key: wrong-api-key
+
+### ===== 직원 조회 =====
+
+### 전체 직원 목록 조회 (기본 페이징)
+GET {{baseUrl}}/api/employee
+X-API-Key: {{apiKey}}
+
+### 페이징 파라미터 지정
+GET {{baseUrl}}/api/employee?page=0&pageSize=5
+X-API-Key: {{apiKey}}
+
+### 이름으로 직원 조회
+GET {{baseUrl}}/api/employee/홍길동
+X-API-Key: {{apiKey}}
+
+### ===== 직원 등록 (JSON Body) =====
+
+### 단일 직원 등록
+POST {{baseUrl}}/api/employee
+Content-Type: application/json
+X-API-Key: {{apiKey}}
+
+[
+  {
+    "name": "홍길동",
+    "email": "hong@example.com",
+    "tel": "010-1234-5678",
+    "joined": "2020-01-15"
+  }
+]
+
+### 다중 직원 등록
+POST {{baseUrl}}/api/employee
+Content-Type: application/json
+X-API-Key: {{apiKey}}
+
+[
+  {
+    "name": "김철수",
+    "email": "kim@example.com",
+    "tel": "01098765432",
+    "joined": "2019-05-20"
+  },
+  {
+    "name": "박영희",
+    "email": "park@example.com",
+    "tel": "010-5555-6666",
+    "joined": "2021-03-10"
+  }
+]
+
+### ===== 직원 등록 (CSV Body) =====
+
+### CSV 형식으로 직원 등록
+POST {{baseUrl}}/api/employee
+Content-Type: text/csv
+X-API-Key: {{apiKey}}
+
+이순신, lee@example.com, 01011112222, 2018.03.07
+유관순, yoo@example.com, 01033334444, 2021.04.28
+
+### ===== 유효성 검증 테스트 =====
+
+### 잘못된 이메일 형식 (400 Bad Request 예상)
+POST {{baseUrl}}/api/employee
+Content-Type: application/json
+X-API-Key: {{apiKey}}
+
+[
+  {
+    "name": "테스트",
+    "email": "invalid-email",
+    "tel": "01012345678",
+    "joined": "2020-01-15"
+  }
+]
+
+### 잘못된 전화번호 형식 (400 Bad Request 예상)
+POST {{baseUrl}}/api/employee
+Content-Type: application/json
+X-API-Key: {{apiKey}}
+
+[
+  {
+    "name": "테스트",
+    "email": "test@example.com",
+    "tel": "1234",
+    "joined": "2020-01-15"
+  }
+]
+
+### 잘못된 날짜 형식 (400 Bad Request 예상)
+POST {{baseUrl}}/api/employee
+Content-Type: application/json
+X-API-Key: {{apiKey}}
+
+[
+  {
+    "name": "테스트",
+    "email": "test@example.com",
+    "tel": "01012345678",
+    "joined": "2020/01/15"
+  }
+]
+
+### 빈 이름 (400 Bad Request 예상)
+POST {{baseUrl}}/api/employee
+Content-Type: application/json
+X-API-Key: {{apiKey}}
+
+[
+  {
+    "name": "",
+    "email": "test@example.com",
+    "tel": "01012345678",
+    "joined": "2020-01-15"
+  }
+]
+
+### ===== 페이징 유효성 테스트 =====
+
+### 잘못된 page 파라미터 (400 Bad Request 예상)
+GET {{baseUrl}}/api/employee?page=-1
+X-API-Key: {{apiKey}}
+
+### 잘못된 pageSize 파라미터 (400 Bad Request 예상)
+GET {{baseUrl}}/api/employee?pageSize=200
+X-API-Key: {{apiKey}}
+
+### ===== API 문서 =====
+
+### Swagger UI (브라우저에서 열기)
+# http://localhost:8080/swagger-ui.html
+
+### OpenAPI Spec (JSON)
+GET {{baseUrl}}/api-docs
+
+### ===== H2 Console =====
+# http://localhost:8080/h2-console
+# JDBC URL: jdbc:h2:mem:employeedb
+# Username: sa
+# Password: (빈 값)
